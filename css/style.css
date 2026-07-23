@@ -1,0 +1,299 @@
+:root {
+  /* base */
+  --color-void:        #050505;
+  --color-void-raised: #0f0f0f;
+  --color-silver:      #ededea;
+  --color-silver-dim:  #8a8a86;
+  --color-line:        #2a2a28;
+
+  /* single accent — used almost nowhere */
+  --color-accent:      #b8860b;
+
+  /* vellum overlay — reproduces the printed book's translucent text leaf */
+  --color-vellum:      rgba(237, 234, 226, 0.3);
+  --color-vellum-ink:  #2a2a28;
+
+  /* series/viewer pages — fine-art paper stock (Hahnemühle-style warm ivory), not the void */
+  --color-paper:        #ede4da;
+  --color-paper-ink:     #2a2a28;
+  --color-paper-ink-dim: #8c8577;
+
+  --color-visited:     #57574f;
+  --color-focus-ring:  #ededea;
+
+  /* type */
+  --font-caption: "Inter", "Suisse Int'l", -apple-system, "Segoe UI", sans-serif;
+  --font-body:    "PT Serif", "Source Serif", Georgia, serif;
+  --tracking-caption: 0.1em;
+  --measure: 64ch;
+  --leading-body: 1.6;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html, body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: var(--color-void);
+  color: var(--color-silver);
+  font-family: var(--font-caption);
+  min-height: 100vh;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 1px solid var(--color-focus-ring);
+  outline-offset: 4px;
+}
+
+/* title page = series index */
+
+.series-index {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(1rem, 3vw, 2rem);
+  padding: 4rem 1.5rem 6rem;
+}
+
+.series-index__status {
+  color: var(--color-silver-dim);
+  letter-spacing: var(--tracking-caption);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.series-index__item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 0;
+}
+
+.series-index__title {
+  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  letter-spacing: var(--tracking-caption);
+  text-transform: uppercase;
+  text-align: center;
+  color: var(--color-silver);
+  opacity: 0.8;
+  transition: opacity 400ms ease;
+}
+
+.series-index__item:hover .series-index__title,
+.series-index__item:focus-visible .series-index__title {
+  opacity: 1;
+}
+
+.series-index__year {
+  font-size: 0.75rem;
+  letter-spacing: var(--tracking-caption);
+  color: var(--color-silver-dim);
+}
+
+/* persistent copyright — the only chrome on the site */
+
+.site-footer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  text-align: center;
+  padding: 1rem 0;
+  font-size: 0.7rem;
+  letter-spacing: var(--tracking-caption);
+  text-transform: uppercase;
+  color: var(--color-silver-dim);
+  background: linear-gradient(to top, var(--color-void) 60%, transparent);
+}
+
+/* "book" series only (spec §3.1) — paper stage instead of the void.
+   Applied by viewer.js as a modifier class, never on by default. */
+
+body.viewer-page--book {
+  background: var(--color-paper);
+  color: var(--color-paper-ink);
+}
+
+.viewer-page--book .viewer__status {
+  color: var(--color-paper-ink-dim);
+}
+
+.viewer-page--book .viewer__title-card {
+  color: var(--color-paper-ink);
+}
+
+.viewer-page--book .site-footer {
+  color: var(--color-paper-ink-dim);
+  background: linear-gradient(to top, var(--color-paper) 60%, transparent);
+}
+
+.viewer-page--book a:focus-visible,
+.viewer-page--book button:focus-visible {
+  outline-color: var(--color-paper-ink);
+}
+
+.viewer {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem 1.5rem 6rem;
+}
+
+/* close + prev/next — thin quiet glyphs, no circles/shadows/backgrounds */
+
+.viewer__close {
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 10;
+  padding: 1.25rem 1.5rem;
+  font-family: var(--font-caption);
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--color-silver-dim);
+  opacity: 0.7;
+  transition: opacity 400ms ease;
+}
+
+.viewer__close:hover,
+.viewer__close:focus-visible {
+  opacity: 1;
+}
+
+.viewer-page--book .viewer__close {
+  color: var(--color-paper-ink-dim);
+}
+
+.viewer__nav {
+  position: fixed;
+  top: 4.5rem;
+  bottom: 0;
+  z-index: 10;
+  display: none;
+  align-items: center;
+  width: 4rem;
+  border: none;
+  background: none;
+  font-family: var(--font-caption);
+  font-size: 1.75rem;
+  line-height: 1;
+  color: var(--color-silver-dim);
+  opacity: 0.6;
+  cursor: pointer;
+  transition: opacity 400ms ease;
+}
+
+.viewer__nav:hover,
+.viewer__nav:focus-visible {
+  opacity: 1;
+}
+
+.viewer-page--book .viewer__nav {
+  color: var(--color-paper-ink-dim);
+}
+
+.viewer__nav--prev {
+  left: 0;
+  justify-content: flex-start;
+  padding-left: 1.25rem;
+}
+
+.viewer__nav--next {
+  right: 0;
+  justify-content: flex-end;
+  padding-right: 1.25rem;
+}
+
+/* prev/next are for precise pointers only — touch devices use swipe */
+@media (hover: hover) and (pointer: fine) {
+  .viewer__nav {
+    display: flex;
+  }
+}
+
+.viewer__status {
+  color: var(--color-silver-dim);
+  letter-spacing: var(--tracking-caption);
+  text-transform: uppercase;
+  font-size: 0.8rem;
+}
+
+.viewer__frame {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  line-height: 0;
+}
+
+.viewer__image {
+  display: block;
+  max-width: 92vw;
+  max-height: 82vh;
+  width: auto;
+  height: auto;
+  opacity: 0;
+  animation: viewer-surface 700ms ease-in-out forwards;
+}
+
+@keyframes viewer-surface {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.viewer__vellum {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  text-align: center;
+  background: var(--color-vellum);
+  opacity: 0;
+  transition: opacity 700ms ease-in-out;
+  pointer-events: none;
+}
+
+.viewer__vellum.is-visible {
+  opacity: 1;
+}
+
+.viewer__vellum p {
+  margin: 0 0 0.75em;
+  color: var(--color-vellum-ink);
+  font-family: var(--font-body);
+  font-size: clamp(0.65rem, 1vw, 0.75rem);
+  line-height: var(--leading-body);
+  max-width: 32ch;
+}
+
+.viewer__vellum p:last-child {
+  margin-bottom: 0;
+}
+
+.viewer__title-card {
+  max-width: var(--measure);
+  padding: 0 1.5rem;
+  text-align: center;
+  color: var(--color-silver);
+  font-family: var(--font-body);
+  font-size: clamp(1.1rem, 3vw, 1.6rem);
+  opacity: 0;
+  animation: viewer-surface 700ms ease-in-out forwards;
+}

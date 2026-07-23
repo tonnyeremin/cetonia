@@ -1,0 +1,49 @@
+{
+  "slug": "danube",
+  "title": "Danube",
+  "year": null,
+  "steps": [
+    {
+      "type": "image",
+      "image": "photos/danube/anton-eremin-danube-1.jpg",
+      "width": 2400,
+      "height": 1600
+    },
+    {
+      "type": "image",
+      "image": "photos/danube/anton-eremin-danube-2.jpg",
+      "width": 1600,
+      "height": 2400
+    },
+    {
+      "type": "image",
+      "image": "photos/danube/anton-eremin-danube-3.jpg",
+      "width": 2400,
+      "height": 1600
+    },
+    {
+      "type": "image",
+      "image": "photos/danube/anton-eremin-danube-4.jpg",
+      "width": 1600,
+      "height": 2400
+    },
+    {
+      "type": "image",
+      "image": "photos/danube/anton-eremin-danube-5.jpg",
+      "width": 2400,
+      "height": 1600
+    },
+    {
+      "type": "image",
+      "image": "photos/danube/anton-eremin-danube-6.jpg",
+      "width": 1602,
+      "height": 2400
+    },
+    {
+      "type": "image",
+      "image": "photos/danube/anton-eremin-danube-7.jpg",
+      "width": 1600,
+      "height": 2400
+    }
+  ]
+}

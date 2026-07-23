@@ -1,0 +1,55 @@
+{
+  "slug": "dolshe-chem",
+  "title": "Longer Than",
+  "year": null,
+  "lang": "en",
+  "presentation": "book",
+  "colophon": "Longer Than. Prague 2026",
+  "steps": [
+    {
+      "type": "text",
+      "lines": ["Longer Than."]
+    },
+    {
+      "type": "pair",
+      "lines": ["To me, fog resembles memory.", "It erases the world little by little."],
+      "image": "photos/longer-then/anton-eremin-longer-then-1.jpg",
+      "width": 2400,
+      "height": 1600
+    },
+    {
+      "type": "pair",
+      "lines": ["First the edges vanish.", "Then the details."],
+      "image": "photos/longer-then/anton-eremin-longer-then-2.jpg",
+      "width": 1602,
+      "height": 2400
+    },
+    {
+      "type": "pair",
+      "lines": ["Then the belief that you ever knew this place as it was."],
+      "image": "photos/longer-then/anton-eremin-longer-then-3.jpg",
+      "width": 2400,
+      "height": 1602
+    },
+    {
+      "type": "pair",
+      "lines": ["At some point only a sensation remains."],
+      "image": "photos/longer-then/anton-eremin-longer-then-4.jpg",
+      "width": 2400,
+      "height": 1602
+    },
+    {
+      "type": "pair",
+      "lines": ["Memory keeps not events but traces of them."],
+      "image": "photos/longer-then/anton-eremin-longer-then-5.jpg",
+      "width": 2400,
+      "height": 1600
+    },
+    {
+      "type": "image",
+      "image": "photos/longer-then/anton-eremin-longer-then-6.jpg",
+      "width": 2400,
+      "height": 1602
+    }
+  ]
+}
