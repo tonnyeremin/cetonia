@@ -38,9 +38,38 @@
 
     let index = 0;
     let currentImageSrc = null;
+    let currentFrameSize = null;
     let figureEl = null;
     let vellumEl = null;
     renderFrame(frames[index]);
+
+    // The figure is a flex item centering itself in .viewer — a flex item's
+    // content-based auto-sizing doesn't reliably honor CSS aspect-ratio
+    // before its content (the photo) has actually loaded, so the box would
+    // collapse to 0x0 (and the vellum text with it) until the photo arrives.
+    // Computing the pixel size ourselves sidesteps that entirely.
+    function sizeFigure(el, w, h) {
+      // clientWidth/Height include padding, so subtract .viewer's own
+      // padding to get the content box actually available to the flex
+      // child — using the raw viewport size here previously let the
+      // figure's computed size exceed what the flex container could give
+      // it, so the flex-shrink algorithm quietly squeezed the box narrower
+      // than intended.
+      const stageStyle = getComputedStyle(stage);
+      const availW = stage.clientWidth - parseFloat(stageStyle.paddingLeft) - parseFloat(stageStyle.paddingRight);
+      const availH = stage.clientHeight - parseFloat(stageStyle.paddingTop) - parseFloat(stageStyle.paddingBottom);
+      const maxW = availW * 0.92;
+      const maxH = availH * 0.82;
+      const scale = Math.min(maxW / w, maxH / h);
+      el.style.width = Math.round(w * scale) + "px";
+      el.style.height = Math.round(h * scale) + "px";
+    }
+
+    window.addEventListener("resize", () => {
+      if (figureEl && currentFrameSize) {
+        sizeFigure(figureEl, currentFrameSize.width, currentFrameSize.height);
+      }
+    });
 
     function advance(delta) {
       const next = index + delta;
@@ -80,8 +109,12 @@
 
       stage.replaceChildren();
       currentImageSrc = frame.image;
+      currentFrameSize = frame.width && frame.height ? { width: frame.width, height: frame.height } : null;
       figureEl = document.createElement("figure");
       figureEl.className = "viewer__frame";
+      if (currentFrameSize) {
+        sizeFigure(figureEl, currentFrameSize.width, currentFrameSize.height);
+      }
 
       const img = document.createElement("img");
       img.className = "viewer__image";

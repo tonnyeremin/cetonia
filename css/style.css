@@ -236,16 +236,27 @@ body.viewer-page--book {
 .viewer__frame {
   position: relative;
   display: inline-block;
+  margin: 0; /* reset the UA default <figure> margin — it was eating into
+                the flex container's available space and shrinking the
+                frame below the size js/viewer.js computes for it */
+  max-width: 92vw;
+  max-height: 82vh;
   cursor: pointer;
   line-height: 0;
+  /* width/height are set inline per photo (js/viewer.js) as exact pixels —
+     this is what reserves the correct box before the photo has loaded.
+     Doing it on the figure rather than the <img> avoids a sizing deadlock:
+     a block-level replaced element with auto width/height inside a
+     shrink-to-fit inline-block parent can't resolve a size until it has
+     loaded, since neither the image nor its wrapper has a definite width
+     to start from. */
 }
 
 .viewer__image {
   display: block;
-  max-width: 92vw;
-  max-height: 82vh;
-  width: auto;
-  height: auto;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
   opacity: 0;
   animation: viewer-surface 700ms ease-in-out forwards;
 }
