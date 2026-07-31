@@ -13,10 +13,10 @@
   --color-vellum:      rgba(237, 234, 226, 0.3);
   --color-vellum-ink:  #2a2a28;
 
-  /* series/viewer pages — fine-art paper stock (Hahnemühle-style warm ivory), not the void */
-  --color-paper:        #ede4da;
-  --color-paper-ink:     #2a2a28;
-  --color-paper-ink-dim: #8c8577;
+  /* series/viewer pages — fine-art paper stock (cool neutral gray, matches B&W prints), not the void */
+  --color-paper:        #e7e7e5;
+  --color-paper-ink:     #262625;
+  --color-paper-ink-dim: #7c7c78;
 
   --color-visited:     #57574f;
   --color-focus-ring:  #ededea;
