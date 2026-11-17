@@ -2,8 +2,13 @@
   "slug": "danube",
   "title": "Danube",
   "year": 2026,
-  "cover": "photos/danube/anton-eremin-danube-1.jpg",
-  "statement": [],
+  "place": "Vienna",
+  "statement": [
+    "The Danube embankment in Vienna draws all kinds of people. They come in the evenings, especially in summer when the heat breaks: some from the surrounding neighbourhoods, some from a small shop nearby. Young men leap into the water with shouts, to impress. Older people stroll slowly, sit and watch the river, and someone brews coffee in a moka pot with an old friend.",
+    "The sociologist Ray Oldenburg called such places “third places”: neither home nor work, but neutral ground where people come without reason or invitation, and where an informal community forms on its own. The Danish urbanist Jan Gehl showed how fragile this life between buildings is: optional and social activities appear only when the setting invites people to linger — evening light, the heat easing off, the closeness of water.",
+    "The series captures these evening hours on the riverbank, when the city briefly stops being a place of obligations and becomes a place where people simply are, side by side."
+  ],
+  "cover": "photos/danube/anton-eremin-danube-3.jpg",
   "steps": [
     {
       "type": "image",

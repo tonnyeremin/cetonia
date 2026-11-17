@@ -62,6 +62,8 @@ button:focus-visible {
 
 .home {
   display: grid;
+  /* minmax(0, …) so the 2400px-wide photo can never widen the column */
+  grid-template-columns: minmax(0, 1fr);
   grid-template-areas:
     "header"
     "work"
@@ -102,6 +104,12 @@ button:focus-visible {
 
 .home__contact {
   grid-area: contact;
+}
+
+.home__photo {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 
 .home__name {
@@ -508,7 +516,7 @@ button:focus-visible {
   margin-top: 1.5rem;
   text-align: left;
   font-family: var(--font-body);
-  font-size: clamp(1rem, 1.6vw, 1.1rem);
+  font-size: clamp(0.875rem, 1.2vw, 0.95rem);
   line-height: var(--leading-body);
 }
 
