@@ -4,6 +4,7 @@
 
   const params = new URLSearchParams(window.location.search);
   const slug = params.get("slug");
+  const startIndex = parseInt(params.get("i"), 10) || 0;
 
   if (!slug) {
     status.textContent = "";
@@ -21,22 +22,30 @@
     });
 
   function start(series) {
-    document.title = (series.title || slug) + " — Anton Eremin";
-    document.documentElement.lang = series.lang || "ru";
+    document.title = (series.title || slug) + " — Tony Eremin";
+    document.documentElement.lang = series.lang || "en";
+
+    // Where × and "past the last frame" lead — the title page by default,
+    // or e.g. the portraits grid for series opened from there.
+    const backHref = series.back || "index.html";
+    document.querySelector(".viewer__close").href = backHref;
 
     if (series.presentation === "book") {
       document.body.classList.add("viewer-page--book");
     }
 
     const frames = buildFrames(series.steps || []);
-    if (frames.length === 0) {
-      status.textContent = "";
-      return;
-    }
+
+    // A series opens on its statement page (title, place/year label,
+    // statement text) unless it sets "intro": false (portraits). A deep
+    // link with ?i=N always means "photo N", so it skips past the statement.
+    const hasIntro = series.intro !== false;
+    if (hasIntro) frames.unshift({ kind: "statement" });
 
     status.remove();
 
-    let index = 0;
+    const hasDeepLink = params.has("i");
+    let index = hasDeepLink ? Math.min(Math.max(startIndex, 0) + (hasIntro ? 1 : 0), frames.length - 1) : 0;
     let currentImageSrc = null;
     let currentFrameSize = null;
     let figureEl = null;
@@ -75,7 +84,7 @@
       const next = index + delta;
       if (next < 0) return;
       if (next >= frames.length) {
-        window.location.href = "index.html";
+        window.location.href = backHref;
         return;
       }
       index = next;
@@ -86,6 +95,16 @@
     // If the photo is already on screen, only the vellum should cross-fade —
     // rebuilding the <img> would restart its fade-in and make it flash.
     function renderFrame(frame) {
+      document.body.classList.toggle("is-statement", frame.kind === "statement");
+
+      if (frame.kind === "statement") {
+        currentImageSrc = null;
+        figureEl = null;
+        vellumEl = null;
+        stage.replaceChildren(buildStatement(series, frames.length > 1));
+        return;
+      }
+
       if (frame.kind === "text") {
         currentImageSrc = null;
         figureEl = null;
@@ -119,12 +138,19 @@
       const img = document.createElement("img");
       img.className = "viewer__image";
       img.src = frame.image;
-      img.alt = "";
+      img.alt = frame.caption || "";
       if (frame.width && frame.height) {
         img.width = frame.width;
         img.height = frame.height;
       }
       figureEl.appendChild(img);
+
+      if (frame.caption) {
+        const caption = document.createElement("figcaption");
+        caption.className = "label viewer__caption";
+        caption.textContent = frame.caption;
+        figureEl.appendChild(caption);
+      }
 
       vellumEl = null;
       if (frame.kind === "overlay") {
@@ -145,9 +171,14 @@
     let justSwiped = false;
     let touchStartX = null;
 
-    stage.addEventListener("click", () => {
+    stage.addEventListener("click", (e) => {
       if (justSwiped) {
         justSwiped = false;
+        return;
+      }
+      // Clicking anywhere on the statement text would be an accidental page
+      // turn (people select or tap to scroll text); only its button advances.
+      if (frames[index].kind === "statement" && !e.target.closest(".statement__start, .statement__photo")) {
         return;
       }
       advance(1);
@@ -192,6 +223,74 @@
     });
   }
 
+  function buildStatement(series, hasPhotos) {
+    const article = document.createElement("article");
+    article.className = "statement";
+
+    // One photo beside the text: "cover" in the series JSON, or the first
+    // photo of the series if none is set.
+    const cover = findCover(series);
+    if (cover) {
+      const img = document.createElement("img");
+      img.className = "statement__photo";
+      img.src = cover.image;
+      img.alt = "";
+      if (cover.width && cover.height) {
+        img.width = cover.width;
+        img.height = cover.height;
+      }
+      article.appendChild(img);
+    }
+
+    const text = document.createElement("div");
+    text.className = "statement__text";
+    article.appendChild(text);
+
+    const title = document.createElement("h1");
+    title.className = "statement__title";
+    title.textContent = series.title || "";
+    text.appendChild(title);
+
+    const meta = [series.place, series.year].filter(Boolean).join(", ");
+    if (meta) {
+      const label = document.createElement("p");
+      label.className = "label";
+      label.textContent = meta;
+      text.appendChild(label);
+    }
+
+    const paragraphs = Array.isArray(series.statement) ? series.statement : [];
+    if (paragraphs.length > 0) {
+      const body = document.createElement("div");
+      body.className = "statement__body";
+      for (const text of paragraphs) {
+        const p = document.createElement("p");
+        p.textContent = text;
+        body.appendChild(p);
+      }
+      text.appendChild(body);
+    }
+
+    if (hasPhotos) {
+      const start = document.createElement("button");
+      start.type = "button";
+      start.className = "statement__start label";
+      start.textContent = "View series →";
+      text.appendChild(start);
+    }
+
+    return article;
+  }
+
+  function findCover(series) {
+    const steps = series.steps || [];
+    if (series.cover) {
+      const match = steps.find((step) => step.image === series.cover);
+      return match || { image: series.cover };
+    }
+    return steps.find((step) => step.image) || null;
+  }
+
   // Expands each JSON step into the sequence of click-states the reader
   // actually walks through: a "pair" step is the vellum-over-photo view,
   // then the same photo alone once the leaf is "turned".
@@ -207,12 +306,14 @@
           image: step.image,
           width: step.width,
           height: step.height,
+          caption: step.caption,
         });
         frames.push({
           kind: "plain",
           image: step.image,
           width: step.width,
           height: step.height,
+          caption: step.caption,
         });
       } else if (step.type === "image") {
         frames.push({
@@ -220,6 +321,7 @@
           image: step.image,
           width: step.width,
           height: step.height,
+          caption: step.caption,
         });
       }
     }

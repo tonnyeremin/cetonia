@@ -1,19 +1,52 @@
 <!doctype html>
-<html lang="ru">
+<html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tony Eremin — Photography</title>
+  <title>Tony Eremin — Documentary Photography</title>
+  <meta name="description" content="Tony Eremin — documentary photographer. Series, portraits, contact.">
   <link rel="icon" href="favicon.svg" type="image/svg+xml">
   <link rel="alternate icon" href="favicon.ico">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500&family=PT+Serif:wght@400&display=swap">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="landing">
-  <main class="series-index" id="series-index">
-    <p class="series-index__status" id="series-index-status">Loading…</p>
+  <main class="home">
+    <header class="home__header">
+      <h1 class="home__name">Tony Eremin</h1>
+      <p class="home__bio">I was born in Saint Petersburg, Russia, and now live in Prague as an immigrant. I have been photographing for many years, outside of any profession. My work is about memory and presence — the way a person can be felt through their absence, in the traces left on a place. I am drawn to nature and to how people live within it. Above all, I am interested in people as they are; if my approach has a name, it is humanist.</p>
+    </header>
+
+    <div class="home__work">
+      <section class="home__section" aria-labelledby="series-label">
+        <h2 class="label" id="series-label">Series</h2>
+        <nav class="series-index" id="series-index">
+          <p class="series-index__status" id="series-index-status">Loading…</p>
+        </nav>
+      </section>
+
+      <section class="home__section" aria-label="Portraits">
+        <nav class="series-index">
+          <a class="series-index__item" href="portraits.html">
+            <span class="series-index__title">Portraits</span>
+          </a>
+        </nav>
+      </section>
+    </div>
+
+    <section class="home__section home__contact" aria-labelledby="contact-label">
+      <h2 class="label" id="contact-label">Contact</h2>
+      <ul class="contacts">
+        <li><a href="#" id="email-link">Email</a></li>
+        <li><a href="https://instagram.com/antoneremin.cetonia" target="_blank" rel="noopener">Instagram</a></li>
+        <li><a href="https://t.me/tonnyeremin" target="_blank" rel="noopener">Telegram</a></li>
+      </ul>
+    </section>
   </main>
   <footer class="site-footer">© Tony Eremin 2026</footer>
-  <script src="js/app.js"></script>
+  <script src="js/app.js?v=3"></script>
 </body>
 </html>

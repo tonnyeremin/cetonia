@@ -2,6 +2,8 @@
   "slug": "danube",
   "title": "Danube",
   "year": 2026,
+  "cover": "photos/danube/anton-eremin-danube-1.jpg",
+  "statement": [],
   "steps": [
     {
       "type": "image",

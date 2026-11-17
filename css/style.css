@@ -1,30 +1,19 @@
 :root {
-  /* base */
-  --color-void:        #050505;
-  --color-void-raised: #0f0f0f;
-  --color-silver:      #ededea;
-  --color-silver-dim:  #8a8a86;
-  --color-line:        #2a2a28;
-
-  /* single accent — used almost nowhere */
-  --color-accent:      #b8860b;
+  /* light gallery wall — the whole site sits on one quiet paper tone */
+  --color-bg:       #f5f4f1;
+  --color-ink:      #1a1a19;
+  --color-ink-dim:  #6e6d69;  /* ~5:1 on --color-bg, safe for small captions */
+  --color-line:     #dcdbd6;
+  --color-focus-ring: #1a1a19;
 
   /* vellum overlay — reproduces the printed book's translucent text leaf */
-  --color-vellum:      rgba(237, 234, 226, 0.3);
-  --color-vellum-ink:  #2a2a28;
-
-  /* series/viewer pages — fine-art paper stock (cool neutral gray, matches B&W prints), not the void */
-  --color-paper:        #e7e7e5;
-  --color-paper-ink:     #262625;
-  --color-paper-ink-dim: #7c7c78;
-
-  --color-visited:     #57574f;
-  --color-focus-ring:  #ededea;
+  --color-vellum:     rgba(245, 244, 241, 0.32);
+  --color-vellum-ink: #1a1a19;
 
   /* type */
-  --font-caption: "Inter", "Suisse Int'l", -apple-system, "Segoe UI", sans-serif;
-  --font-body:    "PT Serif", "Source Serif", Georgia, serif;
-  --tracking-caption: 0.1em;
+  --font-caption: "Inter", -apple-system, "Segoe UI", sans-serif;
+  --font-body:    "PT Serif", Georgia, serif;
+  --tracking-caption: 0.12em;
   --measure: 64ch;
   --leading-body: 1.6;
 }
@@ -39,9 +28,11 @@ html, body {
 }
 
 body {
-  background: var(--color-void);
-  color: var(--color-silver);
+  background: var(--color-bg);
+  color: var(--color-ink);
   font-family: var(--font-caption);
+  font-weight: 400;
+  -webkit-font-smoothing: antialiased;
   min-height: 100vh;
 }
 
@@ -56,55 +47,165 @@ button:focus-visible {
   outline-offset: 4px;
 }
 
-/* title page = series index */
+/* shared caption style: small tracked caps, like a museum label */
 
-.series-index {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: clamp(1rem, 3vw, 2rem);
-  padding: 4rem 1.5rem 6rem;
-}
-
-.series-index__status {
-  color: var(--color-silver-dim);
+.label {
+  margin: 0;
+  font-size: 0.7rem;
+  font-weight: 500;
   letter-spacing: var(--tracking-caption);
   text-transform: uppercase;
-  font-size: 0.8rem;
+  color: var(--color-ink-dim);
 }
 
-.series-index__item {
+/* ---------- title page ---------- */
+
+.home {
+  display: grid;
+  grid-template-areas:
+    "header"
+    "work"
+    "contact";
+  gap: 3rem;
+  max-width: 1100px;
+  min-height: calc(100vh - 3.5rem);
+  margin: 0 auto;
+  padding: clamp(3rem, 12vh, 8rem) 1.5rem 3rem;
+  align-content: start;
+}
+
+/* desktop: who you are on the left, the work on the right */
+@media (min-width: 800px) {
+  .home {
+    grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+      "header  work"
+      "contact work";
+    column-gap: clamp(3rem, 9vw, 9rem);
+  }
+}
+
+.home__header {
+  grid-area: header;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 0.3rem;
-  padding: 0.5rem 0;
+  gap: 0.5rem;
+}
+
+.home__work {
+  grid-area: work;
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+}
+
+.home__contact {
+  grid-area: contact;
+}
+
+.home__name {
+  margin: 0;
+  font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+  font-weight: 500;
+  letter-spacing: var(--tracking-caption);
+  text-transform: uppercase;
+}
+
+.home__bio {
+  max-width: 48ch;
+  margin: 0.75rem 0 0;
+  font-family: var(--font-body);
+  font-size: clamp(0.95rem, 1.5vw, 1.05rem);
+  line-height: var(--leading-body);
+  color: var(--color-ink);
+}
+
+.home__section {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.series-index {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
+}
+
+/* title and year on one line, like a table of contents */
+.series-index__item {
+  display: flex;
+  align-items: baseline;
+  gap: 0.9rem;
+  padding: 0.2rem 0;
 }
 
 .series-index__title {
-  font-size: clamp(1rem, 2.5vw, 1.4rem);
+  font-size: clamp(1rem, 2.4vw, 1.2rem);
   letter-spacing: var(--tracking-caption);
   text-transform: uppercase;
-  text-align: center;
-  color: var(--color-silver);
-  opacity: 0.8;
-  transition: opacity 400ms ease;
+  color: var(--color-ink);
+  transition: color 300ms ease;
 }
 
 .series-index__item:hover .series-index__title,
 .series-index__item:focus-visible .series-index__title {
-  opacity: 1;
+  color: var(--color-ink-dim);
 }
 
 .series-index__year {
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   letter-spacing: var(--tracking-caption);
-  color: var(--color-silver-dim);
+  color: var(--color-ink-dim);
 }
 
-/* persistent copyright — the only chrome on the site */
+.series-index__status {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: var(--tracking-caption);
+  text-transform: uppercase;
+  color: var(--color-ink-dim);
+}
+
+/* contacts */
+
+.contacts {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 2rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.contacts a {
+  font-size: 0.85rem;
+  letter-spacing: 0.04em;
+  border-bottom: 1px solid var(--color-line);
+  padding-bottom: 0.15rem;
+  transition: border-color 300ms ease;
+}
+
+.contacts a:hover,
+.contacts a:focus-visible {
+  border-color: var(--color-ink);
+}
+
+/* the title page scrolls on phones, so its copyright sits at the end of the
+   page in the left column rather than floating over the contacts */
+.landing .site-footer {
+  position: static;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem 1.5rem;
+  text-align: left;
+  background: none;
+}
+
+/* persistent copyright */
 
 .site-footer {
   position: fixed;
@@ -113,38 +214,97 @@ button:focus-visible {
   bottom: 0;
   text-align: center;
   padding: 1rem 0;
+  font-size: 0.68rem;
+  letter-spacing: var(--tracking-caption);
+  text-transform: uppercase;
+  color: var(--color-ink-dim);
+  background: linear-gradient(to top, var(--color-bg) 60%, transparent);
+}
+
+/* ---------- portraits grid ---------- */
+
+.gallery-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 4.5rem 1rem 6rem;
+}
+
+.gallery-page__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: clamp(2rem, 5vh, 3.5rem);
+  text-align: center;
+}
+
+.gallery-page__title {
+  margin: 0;
+  font-size: clamp(1.1rem, 2.6vw, 1.35rem);
+  font-weight: 500;
+  letter-spacing: var(--tracking-caption);
+  text-transform: uppercase;
+}
+
+.gallery-page__status {
+  text-align: center;
+}
+
+/* columns keep each portrait's own aspect ratio — nothing is cropped */
+.gallery {
+  columns: 3 260px;
+  column-gap: clamp(1rem, 2.5vw, 2rem);
+}
+
+.gallery__item {
+  margin: 0 0 clamp(1.5rem, 3vw, 2.5rem);
+  break-inside: avoid;
+}
+
+.gallery__link {
+  display: block;
+  line-height: 0;
+  background: var(--color-line);
+}
+
+.gallery__link img {
+  display: block;
+  width: 100%;
+  height: auto;
+  transition: opacity 300ms ease;
+}
+
+.gallery__link:hover img,
+.gallery__link:focus-visible img {
+  opacity: 0.88;
+}
+
+.gallery__caption {
+  margin-top: 0.6rem;
+  text-align: center;
+}
+
+/* top-left "back" link shared by portraits page */
+
+.page-back {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  padding: 1.25rem 1.5rem;
   font-size: 0.7rem;
   letter-spacing: var(--tracking-caption);
   text-transform: uppercase;
-  color: var(--color-silver-dim);
-  background: linear-gradient(to top, var(--color-void) 60%, transparent);
+  color: var(--color-ink-dim);
+  transition: color 300ms ease;
 }
 
-/* "book" series only (spec §3.1) — paper stage instead of the void.
-   Applied by viewer.js as a modifier class, never on by default. */
-
-body.viewer-page--book {
-  background: var(--color-paper);
-  color: var(--color-paper-ink);
+.page-back:hover,
+.page-back:focus-visible {
+  color: var(--color-ink);
 }
 
-.viewer-page--book .viewer__status {
-  color: var(--color-paper-ink-dim);
-}
-
-.viewer-page--book .viewer__title-card {
-  color: var(--color-paper-ink);
-}
-
-.viewer-page--book .site-footer {
-  color: var(--color-paper-ink-dim);
-  background: linear-gradient(to top, var(--color-paper) 60%, transparent);
-}
-
-.viewer-page--book a:focus-visible,
-.viewer-page--book button:focus-visible {
-  outline-color: var(--color-paper-ink);
-}
+/* ---------- viewer ---------- */
 
 .viewer {
   min-height: 100vh;
@@ -162,21 +322,15 @@ body.viewer-page--book {
   right: 0;
   z-index: 10;
   padding: 1.25rem 1.5rem;
-  font-family: var(--font-caption);
-  font-size: 1.1rem;
+  font-size: 1.3rem;
   line-height: 1;
-  color: var(--color-silver-dim);
-  opacity: 0.7;
-  transition: opacity 400ms ease;
+  color: var(--color-ink-dim);
+  transition: color 300ms ease;
 }
 
 .viewer__close:hover,
 .viewer__close:focus-visible {
-  opacity: 1;
-}
-
-.viewer-page--book .viewer__close {
-  color: var(--color-paper-ink-dim);
+  color: var(--color-ink);
 }
 
 .viewer__nav {
@@ -192,19 +346,14 @@ body.viewer-page--book {
   font-family: var(--font-caption);
   font-size: 1.75rem;
   line-height: 1;
-  color: var(--color-silver-dim);
-  opacity: 0.6;
+  color: var(--color-ink-dim);
   cursor: pointer;
-  transition: opacity 400ms ease;
+  transition: color 300ms ease;
 }
 
 .viewer__nav:hover,
 .viewer__nav:focus-visible {
-  opacity: 1;
-}
-
-.viewer-page--book .viewer__nav {
-  color: var(--color-paper-ink-dim);
+  color: var(--color-ink);
 }
 
 .viewer__nav--prev {
@@ -227,10 +376,10 @@ body.viewer-page--book {
 }
 
 .viewer__status {
-  color: var(--color-silver-dim);
+  color: var(--color-ink-dim);
   letter-spacing: var(--tracking-caption);
   text-transform: uppercase;
-  font-size: 0.8rem;
+  font-size: 0.75rem;
 }
 
 .viewer__frame {
@@ -289,7 +438,7 @@ body.viewer-page--book {
   margin: 0 0 0.75em;
   color: var(--color-vellum-ink);
   font-family: var(--font-body);
-  font-size: clamp(0.65rem, 1vw, 0.75rem);
+  font-size: clamp(0.7rem, 1vw, 0.8rem);
   line-height: var(--leading-body);
   max-width: 32ch;
 }
@@ -302,9 +451,105 @@ body.viewer-page--book {
   max-width: var(--measure);
   padding: 0 1.5rem;
   text-align: center;
-  color: var(--color-silver);
+  color: var(--color-ink);
   font-family: var(--font-body);
   font-size: clamp(1.1rem, 3vw, 1.6rem);
+  line-height: 1.4;
   opacity: 0;
   animation: viewer-surface 700ms ease-in-out forwards;
+}
+
+/* ---------- series statement (first screen of every series) ---------- */
+
+.statement {
+  display: grid;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+  justify-items: center;
+  width: 100%;
+  max-width: 1100px;
+  opacity: 0;
+  animation: viewer-surface 700ms ease-in-out forwards;
+}
+
+@media (min-width: 800px) {
+  .statement {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.statement__photo {
+  display: block;
+  max-width: 100%;
+  max-height: 70vh;
+  width: auto;
+  height: auto;
+  cursor: pointer;
+}
+
+.statement__text {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  max-width: var(--measure);
+  text-align: center;
+}
+
+.statement__title {
+  margin: 0;
+  font-size: clamp(1.2rem, 3vw, 1.6rem);
+  font-weight: 500;
+  letter-spacing: var(--tracking-caption);
+  text-transform: uppercase;
+}
+
+.statement__body {
+  margin-top: 1.5rem;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: clamp(1rem, 1.6vw, 1.1rem);
+  line-height: var(--leading-body);
+}
+
+.statement__body p {
+  margin: 0 0 1em;
+}
+
+.statement__body p:last-child {
+  margin-bottom: 0;
+}
+
+.statement__start {
+  margin-top: 2rem;
+  padding: 0.5rem 0 0.2rem;
+  border: none;
+  border-bottom: 1px solid var(--color-line);
+  background: none;
+  font-family: var(--font-caption);
+  color: var(--color-ink);
+  cursor: pointer;
+  transition: border-color 300ms ease;
+}
+
+.statement__start:hover,
+.statement__start:focus-visible {
+  border-color: var(--color-ink);
+}
+
+/* the statement is the first screen — nothing to go back to */
+.is-statement .viewer__nav--prev {
+  visibility: hidden;
+}
+
+/* caption hangs just below the photo, outside the box js/viewer.js sizes,
+   so it never shrinks the image; it sits in .viewer's bottom padding */
+.viewer__caption {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: 0.9rem;
+  line-height: 1.4;
+  text-align: center;
 }

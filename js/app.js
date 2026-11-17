@@ -2,6 +2,20 @@
   const list = document.getElementById("series-index");
   const status = document.getElementById("series-index-status");
 
+  // The address is never written out in the page: it is assembled from parts
+  // only when someone clicks, so scrapers reading the HTML find nothing.
+  const emailLink = document.getElementById("email-link");
+  if (emailLink) {
+    emailLink.addEventListener("click", function reveal() {
+      const parts = ["an.eremin", "gmail", "com"];
+      const address = parts[0] + "@" + parts[1] + "." + parts[2];
+      // Set the real href before the browser follows the link, so this
+      // same click opens the mail app; later clicks are a plain mailto link.
+      emailLink.href = "mailto:" + address;
+      emailLink.removeEventListener("click", reveal);
+    });
+  }
+
   fetch("content/series.json")
     .then((res) => {
       if (!res.ok) throw new Error("series.json request failed: " + res.status);
